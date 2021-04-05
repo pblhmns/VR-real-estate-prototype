@@ -1,0 +1,12 @@
+{
+  "id": 1038,
+  "name": "Normamap Color I",
+  "fragment": "precision highp float;\n\nvarying vec4 worldCoord;\nvarying vec3 vNormal;\n\nvec3 red   = vec3( 1.0, 0.0, 0.0 );\nvec3 green = vec3( 0.0, 1.0, 0.0 );\nvec3 blue  = vec3( 0.0, 0.0, 1.0 );\n\n\nvoid main() {\n    vec3 intensity = normalize(worldCoord.xyz);\n    float mulR = intensity.x;\n    float mulG = intensity.z*-1.0;\n    float mulB = intensity.y;\n\n    vec3 colorR = red *(mulR+1.0)/2.0;\n    vec3 colorG = green *(mulG+1.0)/2.0;\n    vec3 colorB = blue *(mulB+1.0)/2.0;\n    gl_FragColor = vec4(colorR + colorG +colorB, 1.0 );\n}\n",
+  "vertex": "precision highp float;\r\nprecision highp int;\r\n\r\nuniform mat4 modelMatrix;\r\nuniform mat4 modelViewMatrix;\r\nuniform mat4 projectionMatrix;\r\n\r\nattribute vec3 position;\r\nattribute vec3 normal;\r\n\r\nvarying vec3 vNormal;\r\nvarying vec4 worldCoord;\r\n\r\nvoid main() {\r\n    vNormal = normal;\r\n    worldCoord = vec4(position, 1.0) * modelMatrix;\r\n    \r\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\r\n}",
+  "uniforms": {},
+  "url": "http://shaderfrog.com/app/view/1038",
+  "user": {
+    "username": "Micheus",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

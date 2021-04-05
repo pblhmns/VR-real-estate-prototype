@@ -1,0 +1,55 @@
+{
+  "id": 1863,
+  "name": "Rounded Square Shader",
+  "fragment": "/**\n* Example Fragment Shader\n* Sets the color and alpha of the pixel by setting gl_FragColor\n*/\n\n// Set the precision for data types used in this shader\nprecision highp float;\nprecision highp int;\n\n// Default THREE.js uniforms available to both fragment and vertex shader\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\n\n// Default uniforms provided by ShaderFrog.\nuniform vec3 cameraPosition;\nuniform float time;\n\nuniform float size;\n\n// Example varyings passed from the vertex shader\nvarying vec3 vPosition;\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec2 vUv2;\n#define bg_color vec4(0.0)\n#define red vec4(1,0,0,1)\n#define blue vec4(0,0,1,1)\n#define green vec4(0,1,0,1)\n#define white vec4(1,1,1,1)\n#define d_pix (1.0)\n\nfloat d_square(vec2 uv, float a, float b){\n    float px  = 0.5*a; float py = 0.5*b;  \n    float d = length(uv - vec2(clamp(uv.x,-px,px), clamp(uv.y, -py, py)) );\n    return d;\n}\n\nvoid main()\n{\n\tvec2 uv = 2.0*(vUv.xy ) - 1.0;\n    uv *= 2.0;\n    \n    float size = size;\n    float dist = d_square(uv, size, size);\n    \n    vec4 fragColor = bg_color;\n    fragColor += vec4(tan(dist), 0.5, 0,1) * cos(20.0 * dist);\n    fragColor += -.8*white * smoothstep(1.0*d_pix, 0.0, dist );\n\n    gl_FragColor = fragColor;\n}",
+  "vertex": "/**\n* Example Vertex Shader\n* Sets the position of the vertex by setting gl_Position\n*/\n\n// Set the precision for data types used in this shader\nprecision highp float;\nprecision highp int;\n\n// Default THREE.js uniforms available to both fragment and vertex shader\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\n\n// Default uniforms provided by ShaderFrog.\nuniform vec3 cameraPosition;\nuniform float time;\n\n// Default attributes provided by THREE.js. Attributes are only available in the\n// vertex shader. You can pass them to the fragment shader using varyings\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nattribute vec2 uv2;\n\n// Examples of variables passed from vertex to fragment shader\nvarying vec3 vPosition;\nvarying vec3 vNormal;\nvarying vec2 vUv;\nvarying vec2 vUv2;\n\nvoid main() {\n\n    // To pass variables to the fragment shader, you assign them here in the\n    // main function. Traditionally you name the varying with vAttributeName\n    vNormal = normal;\n    vUv = uv;\n    vUv2 = uv2;\n    vPosition = position;\n\n    // This sets the position of the vertex in 3d space. The correct math is\n    // provided below to take into account camera and object data.\n    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n}",
+  "uniforms": {
+    "cameraPosition": {
+      "name": "cameraPosition",
+      "displayName": null,
+      "type": "v3",
+      "glslType": "vec3",
+      "useGridHelper": false,
+      "useRange": false,
+      "range": null,
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    },
+    "time": {
+      "name": "time",
+      "displayName": null,
+      "type": "f",
+      "glslType": "float",
+      "useGridHelper": false,
+      "useRange": false,
+      "range": null,
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    },
+    "size": {
+      "name": "size",
+      "displayName": null,
+      "type": "f",
+      "glslType": "float",
+      "useGridHelper": false,
+      "useRange": false,
+      "range": null,
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/1863",
+  "user": {
+    "username": "Coolok",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

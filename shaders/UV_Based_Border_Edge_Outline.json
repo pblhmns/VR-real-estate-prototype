@@ -1,0 +1,61 @@
+{
+  "id": 1846,
+  "name": "UV Based Border Edge Outline",
+  "fragment": "precision highp float;\nprecision highp int;\n\nuniform float edgeWidth;\nuniform float sharpness;\nuniform vec3 color;\n\nvarying vec2 vUv;\n\nvoid main() {\n    vec2 uv = abs( ( vUv - 0.5 ) * 2.0 );\n\n    float leftRight = clamp( ( uv.x - ( 1.0 - edgeWidth ) ) * sharpness, 0.0, 1.0 );\n    float upDown = clamp( ( uv.y - ( 1.0 - edgeWidth ) ) * sharpness, 0.0, 1.0 );\n    float alpha = clamp( leftRight + upDown, 0.0, 1.0 );\n\n    gl_FragColor = vec4( color, alpha );\n\n        \n}   ",
+  "vertex": "precision highp float;\nprecision highp int;\n\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nattribute vec2 uv2;\n\nvarying vec2 vUv;\n\nvoid main() {\n  vUv = uv;\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}",
+  "uniforms": {
+    "color": {
+      "name": "color",
+      "displayName": null,
+      "type": "c",
+      "glslType": "vec3",
+      "useGridHelper": false,
+      "useRange": false,
+      "range": null,
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    },
+    "edgeWidth": {
+      "name": "edgeWidth",
+      "displayName": null,
+      "type": "f",
+      "glslType": "float",
+      "useGridHelper": false,
+      "useRange": true,
+      "range": {
+        "min": "0",
+        "max": "1"
+      },
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    },
+    "sharpness": {
+      "name": "sharpness",
+      "displayName": null,
+      "type": "f",
+      "glslType": "float",
+      "useGridHelper": false,
+      "useRange": true,
+      "range": {
+        "min": "0",
+        "max": "100"
+      },
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/1846",
+  "user": {
+    "username": "andrewray",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

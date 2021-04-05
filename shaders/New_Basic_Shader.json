@@ -1,0 +1,75 @@
+{
+  "id": 2943,
+  "name": "New Basic Shader",
+  "fragment": "precision highp float;\n\nuniform vec3 color;\n\nuniform float brightness;\nuniform float falloff;\nuniform float borderColorAlpha;\n\nvarying vec2 vUv;\n\nvoid main() {\n    \n    vec2 multiplier = pow(abs(vUv- .5), vec2(falloff));\n    vec4 aColor = vec4(color, borderColorAlpha);\n    gl_FragColor = aColor * brightness * (0.35 - length(multiplier));\n}",
+  "vertex": "precision highp float;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\n\nattribute vec3 position;\nattribute vec2 uv;\n\nvarying vec2 vUv;\n\nvoid main() {\n    \n    vUv = uv;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}",
+  "uniforms": {
+    "color": {
+      "name": "color",
+      "displayName": null,
+      "type": "c",
+      "glslType": "vec3",
+      "useGridHelper": false,
+      "useRange": false,
+      "range": null,
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    },
+    "brightness": {
+      "name": "brightness",
+      "displayName": null,
+      "type": "f",
+      "glslType": "float",
+      "useGridHelper": false,
+      "useRange": true,
+      "range": {
+        "min": "0",
+        "max": "100"
+      },
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    },
+    "falloff": {
+      "name": "falloff",
+      "displayName": null,
+      "type": "f",
+      "glslType": "float",
+      "useGridHelper": false,
+      "useRange": true,
+      "range": {
+        "min": "0",
+        "max": "100"
+      },
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    },
+    "borderColorAlpha": {
+      "name": "borderColorAlpha",
+      "displayName": null,
+      "type": "f",
+      "glslType": "float",
+      "useGridHelper": false,
+      "useRange": false,
+      "range": null,
+      "isRandom": false,
+      "randomRange": null,
+      "useToggle": false,
+      "toggle": null,
+      "description": ""
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/2943",
+  "user": {
+    "username": "danpriori",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

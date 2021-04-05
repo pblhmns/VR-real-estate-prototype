@@ -1,0 +1,84 @@
+{
+  "id": 1786,
+  "name": "Shrink Colors",
+  "fragment": "#extension GL_OES_standard_derivatives : enable\n\nprecision highp float;\nprecision highp int;\nuniform vec3 Transparent_Glow1503883237191_188_color;\nuniform float Transparent_Glow1503883237191_188_start;\nuniform float Transparent_Glow1503883237191_188_end;\nuniform float Transparent_Glow1503883237191_188_alpha;\nuniform vec3 Transparent_Inner_Glow1503883243899_226_color;\nuniform float Transparent_Inner_Glow1503883243899_226_start;\nuniform float Transparent_Inner_Glow1503883243899_226_end;\nuniform float Transparent_Inner_Glow1503883243899_226_alpha;\nuniform vec3 colorX;\nuniform vec3 colorZ;\nuniform float opacity;\nvarying vec3 Transparent_Glow1503883237191_188_fPosition;\nvarying vec3 Transparent_Glow1503883237191_188_fNormal;\nvarying vec3 Transparent_Inner_Glow1503883243899_226_fPosition;\nvarying vec3 Transparent_Inner_Glow1503883243899_226_fNormal;\nvarying vec4 worldCoord;\nvarying vec3 vNormal;\nvec3 lightPositionX = vec3(1.0, 0.0, 0.0);\nvec3 lightPositionY = vec3(0.0, 1.0, 0.0);\nvec3 lightPositionZ = vec3(0.0, 0.0, 1.0);\nfloat getLightStrength(vec3 lightPosition) \n                                                                        {\n                                                                            return min(abs(dot(normalize(vNormal), vec3(vec4(lightPosition, 1.0)))), 1.0);\n                                                                        }\nvec4 Transparent_Glow1503883237191_188_main() \n                                                                        {\n                                                                            vec4 Transparent_Glow1503883237191_188_gl_FragColor = vec4(0.0);\n                                                                            vec3 normal = normalize(Transparent_Glow1503883237191_188_fNormal);\n                                                                            vec3 eye = normalize(-Transparent_Glow1503883237191_188_fPosition.xyz);\n                                                                            float rim = smoothstep(Transparent_Glow1503883237191_188_start, Transparent_Glow1503883237191_188_end, 1.0 - dot(normal, eye));\n                                                                            float value = clamp(rim * Transparent_Glow1503883237191_188_alpha, 0.0, 1.0);\n                                                                            Transparent_Glow1503883237191_188_gl_FragColor = vec4(Transparent_Glow1503883237191_188_color * value, value);\n                                                                            return Transparent_Glow1503883237191_188_gl_FragColor *= 1.0;\n                                                                        }\nvec4 Transparent_Inner_Glow1503883243899_226_main() \n                                                                        {\n                                                                            vec4 Transparent_Inner_Glow1503883243899_226_gl_FragColor = vec4(0.0);\n                                                                            vec3 normal = normalize(Transparent_Inner_Glow1503883243899_226_fNormal);\n                                                                            vec3 eye = normalize(-Transparent_Inner_Glow1503883243899_226_fPosition.xyz);\n                                                                            float rim = 1.0 - smoothstep(Transparent_Inner_Glow1503883243899_226_start, Transparent_Inner_Glow1503883243899_226_end, 1.0 - dot(normal, eye));\n                                                                            float value = clamp(rim, 0.0, 1.0) * Transparent_Inner_Glow1503883243899_226_alpha;\n                                                                            Transparent_Inner_Glow1503883243899_226_gl_FragColor = vec4(value * Transparent_Inner_Glow1503883243899_226_color, length(value));\n                                                                            return Transparent_Inner_Glow1503883243899_226_gl_FragColor *= 0.2;\n                                                                        }\nvec4 Shader_Side_Test1503977998403_132_main() \n                                                                        {\n                                                                            vec4 Shader_Side_Test1503977998403_132_gl_FragColor = vec4(0.0);\n                                                                            float lightX = getLightStrength(lightPositionX);\n                                                                            float lightZ = getLightStrength(lightPositionZ);\n                                                                            Shader_Side_Test1503977998403_132_gl_FragColor = vec4((colorX * lightX * lightX) + (colorZ * lightZ * lightZ), 1.0);\n                                                                            return Shader_Side_Test1503977998403_132_gl_FragColor *= 1.0;\n                                                                        }\nvec4 Opacity_Multiplier1509942992519_183_main() \n                                                                        {\n                                                                            vec4 Opacity_Multiplier1509942992519_183_gl_FragColor = vec4(0.0);\n                                                                            Opacity_Multiplier1509942992519_183_gl_FragColor = vec4(vec3(1.0), opacity);\n                                                                            return Opacity_Multiplier1509942992519_183_gl_FragColor *= 1.0;\n                                                                        }\nvoid main() \n                                                                        {\n                                                                            gl_FragColor = ((Transparent_Inner_Glow1503883243899_226_main() + (Transparent_Glow1503883237191_188_main() * Shader_Side_Test1503977998403_132_main())) * Opacity_Multiplier1509942992519_183_main());                                                                        }\n",
+  "vertex": "precision highp float;\nprecision highp int;\nuniform mat3 normalMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 modelMatrix;\nuniform mat4 viewMatrix;\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nattribute vec2 uv2;\nvarying vec3 Transparent_Glow1503883237191_188_fNormal;\nvarying vec3 Transparent_Glow1503883237191_188_fPosition;\nvarying vec3 Transparent_Inner_Glow1503883243899_226_fNormal;\nvarying vec3 Transparent_Inner_Glow1503883243899_226_fPosition;\nvarying vec3 vNormal;\nvarying vec4 worldCoord;\nvec4 Transparent_Glow1503883237191_188_main() \n                                                                        {\n                                                                            vec4 Transparent_Glow1503883237191_188_gl_Position = vec4(0.0);\n                                                                            Transparent_Glow1503883237191_188_fNormal = normalize(normalMatrix * normal);\n                                                                            vec4 pos = modelViewMatrix * vec4(position, 1.0);\n                                                                            Transparent_Glow1503883237191_188_fPosition = pos.xyz;\n                                                                            Transparent_Glow1503883237191_188_gl_Position = projectionMatrix * pos;\n                                                                            return Transparent_Glow1503883237191_188_gl_Position *= 1.0;\n                                                                        }\nvec4 Transparent_Inner_Glow1503883243899_226_main() \n                                                                        {\n                                                                            vec4 Transparent_Inner_Glow1503883243899_226_gl_Position = vec4(0.0);\n                                                                            Transparent_Inner_Glow1503883243899_226_fNormal = normalize(normalMatrix * normal);\n                                                                            vec4 pos = modelViewMatrix * vec4(position, 1.0);\n                                                                            Transparent_Inner_Glow1503883243899_226_fPosition = pos.xyz;\n                                                                            Transparent_Inner_Glow1503883243899_226_gl_Position = projectionMatrix * pos;\n                                                                            return Transparent_Inner_Glow1503883243899_226_gl_Position *= 0.2;\n                                                                        }\nvec4 Shader_Side_Test1503977998403_132_main() \n                                                                        {\n                                                                            vec4 Shader_Side_Test1503977998403_132_gl_Position = vec4(0.0);\n                                                                            worldCoord = vec4(position, 1.0) * modelMatrix;\n                                                                            vNormal = normal;\n                                                                            Shader_Side_Test1503977998403_132_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                                                            return Shader_Side_Test1503977998403_132_gl_Position *= 1.0;\n                                                                        }\nvec4 Opacity_Multiplier1509942992519_183_main() \n                                                                        {\n                                                                            vec4 Opacity_Multiplier1509942992519_183_gl_Position = vec4(0.0);\n                                                                            Opacity_Multiplier1509942992519_183_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                                                            return Opacity_Multiplier1509942992519_183_gl_Position *= 1.0;\n                                                                        }\nvoid main() \n                                                                        {\n                                                                            gl_Position = Transparent_Glow1503883237191_188_main() + Transparent_Inner_Glow1503883243899_226_main() + Shader_Side_Test1503977998403_132_main() + Opacity_Multiplier1509942992519_183_main();                                                                        }\n",
+  "uniforms": {
+    "Transparent_Glow1503883237191_188_color": {
+      "value": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "Transparent_Glow1503883237191_188_start": {
+      "value": "0.10505174",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Transparent_Glow1503883237191_188_end": {
+      "value": "0.85014978",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Transparent_Glow1503883237191_188_alpha": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Transparent_Inner_Glow1503883243899_226_color": {
+      "value": {
+        "r": 0.9568627450980393,
+        "g": 0,
+        "b": 0.6980392156862745
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "Transparent_Inner_Glow1503883243899_226_start": {
+      "value": "0",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Transparent_Inner_Glow1503883243899_226_end": {
+      "value": "0.60348738",
+      "type": "f",
+      "glslType": "float"
+    },
+    "Transparent_Inner_Glow1503883243899_226_alpha": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "colorX": {
+      "value": {
+        "r": 0.4666666666666667,
+        "g": 0,
+        "b": 0.011764705882352941
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "colorZ": {
+      "value": {
+        "r": 0.8823529411764706,
+        "g": 0.16470588235294117,
+        "b": 0.12549019607843137
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "opacity": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/1786",
+  "user": {
+    "username": "andrewray",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

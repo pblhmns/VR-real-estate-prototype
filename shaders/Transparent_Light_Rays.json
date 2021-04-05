@@ -1,0 +1,154 @@
+{
+  "id": 1770,
+  "name": "Transparent Light Rays",
+  "fragment": "precision highp float;\nprecision highp int;\nuniform float resolution;\nuniform float time;\nuniform float backgroundAlpha;\nuniform float rayBrightness;\nuniform vec3 rayColor;\nvarying vec2 Transparent_Vertical_Color_Gradient1503261334497_44_vUv;\nvarying vec2 Transparent_Straight_Underwater_Beams1503370945254_147_vUv;\nfloat causticPatternFn(vec2 pos) \n                                                                        {\n                                                                            return (sin(pos.x * 60.0 + time) + pow(sin(-pos.x * 13.0 + time), 1.0) + pow(sin(pos.x * 30.0 + time), 2.0) + pow(sin(pos.x * 50.0 + time), 2.0) + pow(sin(pos.x * 80.0 + time), 2.0) + pow(sin(pos.x * 90.0 + time), 2.0) + pow(sin(pos.x * 12.0 + time), 2.0)) / 2.0;\n                                                                        }\nvec4 Transparent_Vertical_Color_Gradient1503261334497_44_main(void) \n                                                                        {\n                                                                            vec4 Transparent_Vertical_Color_Gradient1503261334497_44_gl_FragColor = vec4(0.0);\n                                                                            Transparent_Vertical_Color_Gradient1503261334497_44_gl_FragColor = vec4(vec3(1.0), Transparent_Vertical_Color_Gradient1503261334497_44_vUv.y);\n                                                                            return Transparent_Vertical_Color_Gradient1503261334497_44_gl_FragColor *= 1.0;\n                                                                        }\nvec4 Transparent_Straight_Underwater_Beams1503370945254_147_main(void) \n                                                                        {\n                                                                            vec4 Transparent_Straight_Underwater_Beams1503370945254_147_gl_FragColor = vec4(0.0);\n                                                                            vec2 uv = (Transparent_Straight_Underwater_Beams1503370945254_147_vUv - 0.5) * resolution;\n                                                                            float pattern = pow(0.2 * rayBrightness * causticPatternFn(uv), 4.0);\n                                                                            Transparent_Straight_Underwater_Beams1503370945254_147_gl_FragColor = vec4(rayColor, max(backgroundAlpha, pattern));\n                                                                            return Transparent_Straight_Underwater_Beams1503370945254_147_gl_FragColor *= 1.0;\n                                                                        }\nvoid main() \n                                                                        {\n                                                                            gl_FragColor = (Transparent_Vertical_Color_Gradient1503261334497_44_main() * Transparent_Straight_Underwater_Beams1503370945254_147_main());                                                                        }\n",
+  "vertex": "precision highp float;\nprecision highp int;\nuniform mat4 modelMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat4 viewMatrix;\nuniform mat3 normalMatrix;\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nattribute vec2 uv2;\nvarying vec2 Transparent_Vertical_Color_Gradient1503261334497_44_vUv;\nvarying vec2 Transparent_Straight_Underwater_Beams1503370945254_147_vUv;\nvec4 Transparent_Vertical_Color_Gradient1503261334497_44_main() \n                                                                        {\n                                                                            vec4 Transparent_Vertical_Color_Gradient1503261334497_44_gl_Position = vec4(0.0);\n                                                                            Transparent_Vertical_Color_Gradient1503261334497_44_vUv = uv;\n                                                                            Transparent_Vertical_Color_Gradient1503261334497_44_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                                                            return Transparent_Vertical_Color_Gradient1503261334497_44_gl_Position *= 1.0;\n                                                                        }\nvec4 Transparent_Straight_Underwater_Beams1503370945254_147_main() \n                                                                        {\n                                                                            vec4 Transparent_Straight_Underwater_Beams1503370945254_147_gl_Position = vec4(0.0);\n                                                                            Transparent_Straight_Underwater_Beams1503370945254_147_vUv = uv;\n                                                                            Transparent_Straight_Underwater_Beams1503370945254_147_gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n                                                                            return Transparent_Straight_Underwater_Beams1503370945254_147_gl_Position *= 1.0;\n                                                                        }\nvoid main() \n                                                                        {\n                                                                            gl_Position = Transparent_Vertical_Color_Gradient1503261334497_44_main() + Transparent_Straight_Underwater_Beams1503370945254_147_main();                                                                        }\n",
+  "uniforms": {
+    "Transparent_Vertical_Color_Gradient1503261334497_44_modelMatrix": {
+      "value": {
+        "elements": {
+          "0": 1,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 1,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 1,
+          "11": 0,
+          "12": 0,
+          "13": 0,
+          "14": 0,
+          "15": 1
+        }
+      },
+      "type": "m4",
+      "glslType": "mat4"
+    },
+    "Transparent_Vertical_Color_Gradient1503261334497_44_modelViewMatrix": {
+      "value": {
+        "elements": {
+          "0": 1,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 1,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 1,
+          "11": 0,
+          "12": 0,
+          "13": 0,
+          "14": 0,
+          "15": 1
+        }
+      },
+      "type": "m4",
+      "glslType": "mat4"
+    },
+    "Transparent_Vertical_Color_Gradient1503261334497_44_projectionMatrix": {
+      "value": {
+        "elements": {
+          "0": 1,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 1,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 1,
+          "11": 0,
+          "12": 0,
+          "13": 0,
+          "14": 0,
+          "15": 1
+        }
+      },
+      "type": "m4",
+      "glslType": "mat4"
+    },
+    "Transparent_Vertical_Color_Gradient1503261334497_44_viewMatrix": {
+      "value": {
+        "elements": {
+          "0": 1,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 1,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 1,
+          "11": 0,
+          "12": 0,
+          "13": 0,
+          "14": 0,
+          "15": 1
+        }
+      },
+      "type": "m4",
+      "glslType": "mat4"
+    },
+    "Transparent_Vertical_Color_Gradient1503261334497_44_normalMatrix": {
+      "value": {
+        "elements": {
+          "0": 1,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 1,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 1
+        }
+      },
+      "type": "m3",
+      "glslType": "mat3"
+    },
+    "time": {
+      "type": "f",
+      "glslType": "float"
+    },
+    "rayBrightness": {
+      "value": "1.90508424",
+      "type": "f",
+      "glslType": "float"
+    },
+    "rayColor": {
+      "value": {
+        "r": 0.5372549019607843,
+        "g": 0.9372549019607843,
+        "b": 1
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "resolution": {
+      "value": "1.29268564",
+      "type": "f",
+      "glslType": "float"
+    },
+    "backgroundAlpha": {
+      "value": "0.20699552",
+      "type": "f",
+      "glslType": "float"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/1770",
+  "user": {
+    "username": "andrewray",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}

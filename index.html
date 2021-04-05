@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>maiPISO: Diseña y compra tu futura casa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+<script src="aframe-preloader-component.min.js"></script>
+<script src="https://unpkg.com/aframe-text-geometry-component@^0.5.1/dist/aframe-text-geometry-component.min.js"></script>
+<script src="aframe-shader-frog.js"></script>
+
+</head>
+<body>
+  <a-scene preloader="title: Cargando...; doneLabelText: Completado;" inspector="" keyboard-shortcuts="" screenshot="" vr-mode-ui="" device-orientation-permission-ui="">
+    <a-assets>
+      <a-asset-item id="GoldmanRegular" src="assets/Goldman_Regular.json" crossorigin="anonymous" preload="true"></a-asset-item>
+      <a-asset-item id="UbuntuBold" src="assets/Ubuntu_Bold.json" crossorigin="anonymous" preload="true"></a-asset-item>
+      <a-asset-item id="edificio1-obj" src="assets/Apartment_Building_01_obj.obj" crossorigin="anonymous" preload="true"></a-asset-item>
+      <a-asset-item id="barrio1-obj" src="assets/city_base.obj" crossorigin="anonymous" preload="true"></a-asset-item>
+      <a-asset-item id="missing1-obj" src="assets/missing_building.obj" crossorigin="anonymous" preload="true"></a-asset-item>
+      <a-asset-item id="edificio2-obj" src="assets/edificio2.obj" crossorigin="anonymous" preload="true"></a-asset-item>
+      <a-asset-item id="piso-obj" src="assets/piso_lofi.obj" crossorigin="anonymous" preload="true"></a-asset-item>
+      <a-asset-item id="estructura1-obj" src="assets/Apartment_Building_01_structure.obj" crossorigin="anonymous" preload="true"></a-asset-item>
+          <!-- <a-asset-item id="edificio2-obj" src="assets/low_poly_bilding.obj" crossorigin="anonymous" preload="true"></a-asset-item>
+            <a-asset-item id="edificio2-mtl" src="assets/low_poly_bilding.mtl" crossorigin="anonymous" preload="true"></a-asset-item> -->
+<img id="BG" src="img/background.jpg" crossorigin="anonymous" preload="true"></img>
+<img id="BG2" src="img/background2.jpg" crossorigin="anonymous" preload="true"></img>
+<img id="extras1" src="img/extras1.png" crossorigin="anonymous" preload="true"></img>
+<img id="extras0" src="img/extras0.png" crossorigin="anonymous" preload="true"></img>
+<img id="pendiente" src="img/pendiente.png" crossorigin="anonymous" preload="true"></img>
+<img id="completado" src="img/completado.png" crossorigin="anonymous" preload="true"></img>
+<img id="itemBG" src="img/item_BG.png" crossorigin="anonymous" preload="true"></img>
+<img id="favsBG" src="img/favs_BG.png" crossorigin="anonymous" preload="true"></img>
+<img id="identity" src="img/identidad_maiPISO.png" crossorigin="anonymous" preload="true"></img>
+<img id="controles" src="img/controles.png" crossorigin="anonymous" preload="true"></img>
+<img id="carrusel" src="img/carrusel.png" crossorigin="anonymous" preload="true"></img>
+<img id="disenosBG" src="img/disenos_BG.png" crossorigin="anonymous" preload="true"></img>
+      <img id="button" src="assets/watchUI_example.png" crossorigin="anonymous" preload="true"></img>
+      <img id="homeIMG" src="img/home.png" crossorigin="anonymous" preload="true"></img>
+      <img id="memo" src="assets/memo_calidades.png" crossorigin="anonymous" preload="true"></img>
+      <img id="comu" src="assets/comunidad.png" crossorigin="anonymous" preload="true"></img>
+      <img id="ento" src="assets/entorno.png" crossorigin="anonymous" preload="true"></img>
+      <img id="category" src="assets/categoria00.png" crossorigin="anonymous" preload="true"></img>
+      <img id="option" src="assets/option00.png" crossorigin="anonymous" preload="true"></img>
+      <a-mixin id="spin" animation__spin="property: rotation; to: 0 360 0; dur: 20000; easing: linear; loop: true; pauseEvents: animationcomplete__gobig; resumeEvents:"></a-mixin>
+      <a-mixin id="hoverable" animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 600; easing: easeOutElastic; startEvents: mouseenter; enabled: true"
+      animation__mouseleave="property: scale; to: 1 1 1; dur: 300; startEvents: mouseleave; enabled: true"></a-mixin>
+      <a-mixin id="hoverableBOTON" animation__mouseenter="property: scale; to: .45 .45 .45; dur: 600; easing: easeOutElastic; startEvents: mouseenter; enabled: true"
+      animation__mouseleave="property: scale; to: .4 .4 .4; dur: 300; startEvents: mouseleave; enabled: true"></a-mixin>
+      <a-mixin id="notHoverable" animation__mouseenter="enabled: false" animation__mouseleave="enabled: false"></a-mixin>
+      <a-mixin id="travel1" animation__makebig="property: scale; to: 0.002 0.002 0.002; dur: 900; startEvents: click; easing: easeInOutQuad"
+        animation__lineUp="property: rotation; to: 0 -60 0; dur: 1000; startEvents: animationcomplete__makebig; easing: easeInOutQuad;"></a-mixin>
+      <a-mixin id="notTravel" animation__makebig="enabled: false" animation__gobig="enabled: false" animation__lineUp="enabled: false"></a-mixin>
+      <a-mixin id="confirm" animation__confirmation="property: rotation; to: 0 360 0; dur: 600; startEvents: click;"
+      animation__backconfirmation="property: rotation; to: 0 180 0; dur: 600; startEvents: animationcomplete__confirmation;"></a-mixin>
+      <a-mixin id="hoverBACK" animation__mouseenter00="property: rotation; to: 0 180 0; dur: 600; easing: easeOutElastic; startEvents: mouseenter; enabled: true"
+      animation__mouseleave00="property: rotation; to: 0 0 0; dur: 300; startEvents: mouseleave; enabled: true"></a-mixin>
+      <a-mixin id="volver"
+      event-set__hideNAV01="_event: click; _target: #nav1; visible: false"
+      event-set__showPROMO1="_event: click; _target: #promocion1; visible: true"
+      event-set__showEDIFICIO1="_event: click; _target: #edificio1; visible: true"
+      event-set__showPROMO2="_event: click; _target: #promocion2; visible: true"
+      event-set__showPROMO3="_event: click; _target: #promocion3; visible: true"
+      event-set__showPROMO4="_event: click; _target: #promocion4; visible: true"
+      event-set__backClick001="_event: click; _target: #promocion1; class: clickable"
+      event-set__backClick01="_event: click; _target: #edificio1; class: clickable"
+      event-set__backClick02="_event: click; _target: #promocion2; class: clickable"
+      event-set__backClick002="_event: click; _target: #edificio2; class: clickable"
+      event-set__backClick03="_event: click; _target: #promocion3; class: clickable"
+      event-set__backClick003="_event: click; _target: #edificio3; class: clickable"
+      event-set__backClick04="_event: click; _target: #promocion4; class: clickable"
+      event-set__backClick004="_event: click; _target: #edificio4; class: clickable"
+      event-set__backhome2="_event: click; _target: #edificio2;  position: 0 0 0;"
+      event-set__shrinkhome2="_event: click; _target: #edificio2;  scale: 0.001 0.001 0.001;"
+      event-set__shrinkhome22="_event: click; _target: #promocion2;  scale: 1 1 1;"
+      event-set__backhome22="_event: click; _target: #promocion2;  mixin: hoverable;"
+      event-set__backhome1="_event: click; _target: #edificio1;  position: 0 0 0;"
+      event-set__shrinkhome1="_event: click; _target: #edificio1;  scale: 0.001 0.001 0.001;"
+      event-set__shrinkhome11="_event: click; _target: #promocion1;  scale: 1 1 1;"
+      event-set__backhome11="_event: click; _target: #promocion1;  mixin: hoverable;"
+  event-set__hideBARRIO1="_event: click; _target: #barrio01; visible: false"
+      event-set__backhome3="_event: click; _target: #edificio3;  position: 0 0 0;"
+      event-set__shrinkhome3="_event: click; _target: #edificio3;  scale: 0.001 0.001 0.001;"
+      event-set__shrinkhome33="_event: click; _target: #promocion3;  scale: 1 1 1;"
+      event-set__backhome33="_event: click; _target: #promocion3;  mixin: hoverable;"
+      event-set__backhome4="_event: click; _target: #edificio4;  position: 0 0 0;"
+      event-set__shrinkhome4="_event: click; _target: #edificio4;  scale: 0.001 0.001 0.001;"
+      event-set__shrinkhome44="_event: click; _target: #promocion4;  scale: 1 1 1;"
+      event-set__backhome44="_event: click; _target: #promocion4;  mixin: hoverable;"
+      event-set__hideailable01="_event: click; _target: #available01; visible: false"
+      event-set__hideNAV001="_event: click; _target: #nav01; visible: false"
+      event-set__quitClick1A="_event: click; _target: #piso1A; class: not-clickable"
+          event-set__quitClick2A="_event: click; _target: #piso2A; class: not-clickable"
+          event-set__quitClick3A="_event: click; _target: #piso3A; class: not-clickable"
+          event-set__quitClick4A="_event: click; _target: #piso4A; class: not-clickable"
+          event-set__quitClick5A="_event: click; _target: #piso5A; class: not-clickable"
+          event-set__quitClick6A="_event: click; _target: #piso6A; class: not-clickable"
+          event-set__quitClick1B="_event: click; _target: #piso1B; class: not-clickable"
+          event-set__quitClick2B="_event: click; _target: #piso2B; class: not-clickable"
+          event-set__quitClick3B="_event: click; _target: #piso3B; class: not-clickable"
+          event-set__quitClick4B="_event: click; _target: #piso4B; class: not-clickable"
+          event-set__quitClick5B="_event: click; _target: #piso5B; class: not-clickable"
+          event-set__quitClick6B="_event: click; _target: #piso6B; class: not-clickable"
+          event-set__disableMemocali="_event: click; _target: #memocali; class: not-clickable"
+          event-set__disableComunidad="_event: click; _target: #comunidad; class: not-clickable"
+          event-set__disableEntorno="_event: click; _target: #entorno; class: not-clickable"
+          event-set__disableReser="_event: click; _target: #botonreser; class: not-clickable"
+          event-set__showTITULO="_event: click; _target: #disponibles; visible: true"
+          event-set__enableHoverPROMO="_event: click; _target: #activator; class: clickable"
+          event-set__enableHoverPROMO2="_event: click; _target: #promos; scale: .5 .5 .5"
+          event-set__enableHoverPROMO3="_event: click; _target: #promos; mixin: hoverPROMO"
+          event-set__enableHoverPROMO4="_event: click; _target: #promos; position: 0 1.5 -3"
+          event-set__showMisDisenos="_event: click; _target: #MisDisenos; visible: true"
+          event-set__allowClickModeloVisita="_event: click; _target: #modelovisita; class: clickable"
+          event-set__enableDISENO1="_event: click; _target: #modelovisita2; class: clickable"
+          event-set__showComoVa="_event: click; _target: #ComoVa; visible: true"
+          event-set__enablebotoncv1="_event: click; _target: #MisDocumentos; class: clickable"
+          event-set__enablebotoncv2="_event: click; _target: #MisMensajes; class: clickable"
+          event-set__enableComoVa="_event: click; _target: #edificio11; class: clickable">
+    </a-mixin>
+    <a-mixin id="hoverPISO" animation__mouseenter0="property: scale; to: .9 .8 .3; dur: 600; easing: easeOutElastic; startEvents: mouseenter; enabled: true"
+    animation__mouseleave0="property: scale; to: .81 .72 .26; dur: 300; startEvents: mouseleave; enabled: true"></a-mixin>
+    <a-mixin id="hoverPROMO" animation__mouseenterpp="property: scale; to: 1 1 1; dur: 600; easing: easeOutQuad; startEvents: mouseenter; enabled: true"
+    animation__mouseleavepp="property: scale; to: .5 .5 .5; dur: 300; easing: easeOutQuad; startEvents: mouseleave; enabled: true"  animation__mouseenter00="property: position; to: 0 0 -1.5; dur: 600; easing: easeOutQuad; startEvents: mouseenter; enabled: true" animation__mouseleave00="property: position; to: 0 1.5 -3; dur: 300; easing: easeOutQuad; startEvents: mouseleave; enabled: true"></a-mixin>
+    <a-mixin id="ensanche" animation__ensanche="property: position; to: -0.25 0 0; dur: 600; easing: easeOutQuad"></a-mixin>
+    <a-mixin id="hoverVIRTU1" animation__mouseenter000="property: rotation; to: 0 0 0; dur: 600; easing: easeOutQuad; loop: false; enabled: true"></a-mixin>
+    <a-mixin id="hoverVIRTU2" animation__mouseleave000="property: rotation; to: 0 -40 0; dur: 300; easing: easeOutQuad; loop: false; enabled: true">
+      <a-mixin id="hoverCOMO1" animation__mouseenter0000="property: rotation; to: 0 0 0; dur: 600; easing: easeOutQuad; loop: false; enabled: true"></a-mixin>
+      <a-mixin id="hoverCOMO2" animation__mouseleave0000="property: rotation; to: 0 40 0; dur: 300; easing: easeOutQuad; loop: false; enabled: true">
+         <a-mixin id="discretebutton" animation__hoverOpacity="property: material.opacity; to: 0.6; dur: 200; easing: easeInOutQuad; startEvents: mouseenter;" animation__hoverOpacityBack="property: material.opacity; to: 0.2; dur: 200; easing: easeInOutQuad; startEvents: mouseleave;"></a-mixin>
+    <a-mixin id="traveling" animation__rotateBIG2="property: rotation; to: 0 90 0; dur: 600; easing: easeInOutQuad; loop: false;" animation__moveBIG2="property: position; to: 0 -.25 0; dur: 600; easing: easeInOutQuad; loop: false" animation__scaleBIG2="property: scale; to: 1.2 1.2 1.2; dur: 600; easing: easeInOutQuad; loop: false"></a-mixin>
+    <a-mixin id="travelingBACK" animation__rotateBIG22="property: rotation; to: 0 40 0; dur: 300; easing: easeInOutQuad; loop: false;" animation__moveBIG22="property: position; to: 0.92 0 -0.92; dur: 300; easing: easeInOutQuad; loop: false" animation__scaleBIG22="property: scale; to: 1 1 1; dur: 300; easing: easeInOutQuad; loop: false"></a-mixin>
+    <audio id="sounddesign" src="assets/PM_CSII_Guitar_Grains.mp3" preload="true"></audio>
+    <audio id="clicksound" src="assets/little_robot_sound_factory_multimedia_Click_Electronic_00.mp3" preload="true"></audio>
+    </a-assets>
+    <!-- <a-sphere position="1 2 -3" scale=".3 .3 .3" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Jelly.json)"></a-sphere>
+    <a-sphere position="2 2 -3" scale=".3 .3 .3" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)"></a-sphere> -->
+<a-sky id="sky" src="#BG" rotation="0 180 0"></a-sky>
+<a-entity id="ambient" sound="src: #sounddesign; autoplay: true; positional: false; loop: true;"></a-entity>
+<a-image src="#identity" width="2.53" height="1" position="0 -1 -5.43" rotation="-12 0 0" scale="1 1 1"></a-image>
+<a-entity id="light1" position="-0.75 2 -3.1" mixin="">
+  <a-entity id="directionaltarget1" position="0.3 -1.23 -0.58" scale="1 1 1">
+  <a-light position="0.85 3.8 4.92" color="white" intensity=".7" target="#directionaltarget1" light="castShadow: true; shadowRadius: 2.5; shadowCameraRight: 10; shadowCameraLeft: -10; shadowCameraBottom: -10; shadowCameraTop: 10;"></a-light>
+</a-entity>
+</a-entity>
+<a-entity id="promos" position="0 1.5 -3" mixin="hoverPROMO" scale=".5 .5 .5"
+event-set__enableHoverVIRTU1="_event: mouseenter; _target: #MisDisenos; mixin: hoverVIRTU1"
+event-set__enableHoverVIRTU2="_event: mouseleave; _target: #MisDisenos; mixin: hoverVIRTU2"
+event-set__enableHoverCOMO1="_event: mouseenter; _target: #ComoVa; mixin: hoverCOMO1"
+event-set__enableHoverCOMO2="_event: mouseleave; _target: #ComoVa; mixin: hoverCOMO2">
+  <a-plane id="activator" class="clickable" position=".1 1.77 -4.2" rotation="" width="5.5" height="4" visible="false"
+  ></a-plane>
+<a-entity id="disponibles" position="-1.84 3.89 -3.43" rotation="30 0 0" scale="" text-geometry="value: Viviendas Disponibles; font: #GoldmanRegular; size: 0.25; height: 0.09; bevelEnabled: true; bevelSize: 0.004; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)"></a-entity>
+<a-entity id="promocion1" position="-0.85 2 -3" rotation="35 0 0" mixin="hoverable">
+  <a-entity id="nav01" position="-1.11 -1.76 -1.32" rotation="0 30 0" visible="false">
+  <a-sphere class="clickable" position="" scale=".06 .06 .06" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="volver hoverBACK"></a-sphere>
+  <a-text value="Volver" align="left" width="2" position=".08 0 0"></a-text></a-entity>
+  <a-entity>
+  <a-entity position="-0.6 1 0.512" rotation="-4 4 -1" text-geometry="value: Promocion 1; font: #GoldmanRegular; size: 0.15; height: 0.02; bevelEnabled: true; bevelSize: 0.008; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/BlackCyan.json)">
+  <a-text value="en Municipio, Provincia, Pais." align="left" width="2.5" position="0 -.1 0"></a-text>
+<a-text value="desde 160.000 EUR" align="right" width="1.5" position="1.5 -.2 0"></a-text></a-entity>
+  <a-obj-model class="clickable" src="#edificio1-obj" scale="0.001 0.001 0.001" id="edificio1" mixin="spin travel1" shadow="receive: true; cast: true;" animation__gobig1="property: position; to: 0.97 -1.79 -1.09; dur: 900; startEvents: click; easing: easeInOutQuad" sound="src: #clicksound; on: click;"
+    event-set__showNAV01="_event: click; _target: #nav1; visible: true"
+    event-set__quitHover01="_event: click; _target: #promocion1; mixin: notHoverable"
+    event-set__quitClick001="_event: click; _target: #promocion1; class: not-clickable"
+    event-set__quitClick01="_event: click; _target: #edificio1; class: not-clickable"
+    event-set__quitClick02="_event: click; _target: #promocion2; class: not-clickable"
+    event-set__quitClick002="_event: click; _target: #edificio2; class: not-clickable"
+    event-set__quitClick03="_event: click; _target: #promocion3; class: not-clickable"
+    event-set__quitClick003="_event: click; _target: #edificio3; class: not-clickable"
+    event-set__quitClick04="_event: click; _target: #promocion4; class: not-clickable"
+    event-set__quitClick004="_event: click; _target: #edificio4; class: not-clickable"
+    event-set__hidePROMO2="_event: click; _target: #promocion2; visible: false"
+    event-set__hidePROMO3="_event: click; _target: #promocion3; visible: false"
+    event-set__hidePROMO4="_event: click; _target: #promocion4; visible: false"
+    event-set__showBARRIO01="_event: click; _target: #barrio01; visible: true"
+    event-set__showavailable01="_event: click; _delay: 1900; _target: #available01; visible: true"
+    event-set__showNAV001="_event: click; _delay: 1900; _target: #nav01; visible: true"
+    event-set__enableClick1A="_event: click; _target: #piso1A; class: clickable"
+    event-set__enableClick2A="_event: click; _target: #piso2A; class: clickable"
+    event-set__enableClick3A="_event: click; _target: #piso3A; class: clickable"
+    event-set__enableClick4A="_event: click; _target: #piso4A; class: clickable"
+    event-set__enableClick5A="_event: click; _target: #piso5A; class: clickable"
+    event-set__enableClick6A="_event: click; _target: #piso6A; class: clickable"
+    event-set__enableClick1B="_event: click; _target: #piso1B; class: clickable"
+    event-set__enableClick2B="_event: click; _target: #piso2B; class: clickable"
+    event-set__enableClick3B="_event: click; _target: #piso3B; class: clickable"
+    event-set__enableClick4B="_event: click; _target: #piso4B; class: clickable"
+    event-set__enableClick5B="_event: click; _target: #piso5B; class: clickable"
+    event-set__enableClick6B="_event: click; _target: #piso6B; class: clickable"
+    event-set__enableMemocali="_event: click; _target: #memocali; class: clickable"
+    event-set__enableComunidad="_event: click; _target: #comunidad; class: clickable"
+    event-set__enableEntorno="_event: click; _target: #entorno; class: clickable"
+    event-set__hideTITULO="_event: click; _target: #disponibles; visible: false"
+    event-set__disableHoverPROMO="_event: click; _target: #activator; class: not-clickable"
+    event-set__disableHoverPROMO2="_event: click; _target: #promos; scale: 1 1 1"
+    event-set__disableHoverPROMO3="_event: click; _target: #promos; mixin: notHoverable"
+    event-set__hideMisDisenos="_event: click; _target: #MisDisenos; visible: false"
+    event-set__quitClickModeloVisita="_event: click; _target: #modelovisita; class: not-clickable"
+    event-set__disableDISENO1="_event: click; _target: #modelovisita2; class: not-clickable"
+    event-set__hideComoVa="_event: click; _target: #ComoVa; visible: false"
+    event-set__disablebotoncv1="_event: click; _target: #MisDocumentos; class: not-clickable"
+    event-set__disablebotoncv2="_event: click; _target: #MisMensajes; class: not-clickable"
+    event-set__disableComoVa="_event: click; _target: #edificio11; class: not-clickable"
+    event-set__ensancheON="_event: click; _target: #promos; mixin: ensanche">
+
+    <a-entity id="barrio01" visible="false" class="not-clickable">
+    <a-obj-model src="#barrio1-obj" position="1411 167 109.3" scale="1.6 1.6 1.6" shadow="receive: true; cast: false;" material="color: grey;">
+    </a-obj-model>
+    <a-obj-model src="#barrio1-obj" position="-1900 167 109.3" scale="1.6 1.6 1.6" shadow="receive: true; cast: false;" material="color: grey">
+        <a-obj-model src="#missing1-obj" scale="1000 1000 1000" shadow="receive: true; cast: false;" material="color: grey"></a-obj-model>
+    </a-obj-model>
+    <a-obj-model src="#barrio1-obj" position="-1900 167 -3300" scale="1.6 1.6 1.6" shadow="receive: true; cast: false;" material="color: grey">
+        <a-obj-model src="#missing1-obj" scale="1000 1000 1000" shadow="receive: true; cast: false;" material="color: grey"></a-obj-model>
+    </a-obj-model>
+    <a-obj-model src="#barrio1-obj" position="1411 167 -3300" scale="1.6 1.6 1.6" shadow="receive: true; cast: false;" material="color: grey">
+        <a-obj-model src="#missing1-obj" scale="1000 1000 1000" shadow="receive: true; cast: false;" material="color: grey"></a-obj-model>
+    </a-obj-model>
+  </a-entity>
+</a-obj-model>
+</a-entity>
+</a-entity>
+
+<a-entity id="available01" position="0.314 0.655 -4.817" rotation="56 -180 -30" visible="false">
+  <a-entity id="letraA" position="0 1 0">
+  <a-entity>
+  <a-box id="piso1A" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+  <a-text value="1A" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+  </a-entity>
+  <a-entity position="0 0 -.3">
+  <a-box id="piso2A" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+  <a-text value="2A" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+  </a-entity>
+  <a-entity position="0 0 -.6">
+  <a-box id="piso3A" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+  <a-text value="3A" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+  </a-entity>
+  <a-entity position="0 0 -.9">
+  <a-box id="piso4A" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+  <a-text value="4A" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+  </a-entity>
+  <a-entity position="0 0 -1.2">
+  <a-box id="piso5A" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+  <a-text value="5A" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+  </a-entity>
+  <a-entity position="0 0 -1.5">
+  <a-box id="piso6A" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+  <a-text value="6A" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+  </a-entity>
+  </a-entity>
+
+<a-entity id="letraB">
+<a-entity>
+<a-box id="piso1B" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+<a-text value="1B" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+</a-entity>
+<a-entity position="0 0 -.3">
+<a-box id="piso2B" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+<a-text value="2B" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+</a-entity>
+<a-entity position="0 0 -.6">
+<a-box id="piso3B" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+<a-text value="3B" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+</a-entity>
+<a-entity position="0 0 -.9">
+  <a-entity id="botonespromo" rotation="86 133 -49" position="2.315 -0.71 -2">
+    <a-image id="memocali" src="#memo" height="0.25" width=".25" mixin="hoverable" class="not-clickable"><a-text value="Memoria de Calidades" align="center" width="1" wrapCount="10" position="0 -0.2 0"></a-text></a-image>
+    <a-image id="entorno" src="#ento" height="0.25" width=".25" mixin="hoverable" class="not-clickable" position=".4 0 0"><a-text value="Entorno" align="center" width="1" wrapCount="10" position="0 -0.2 0"></a-text></a-image>
+    <a-image id="comunidad" src="#comu" height="0.25" width=".25" mixin="hoverable" class="not-clickable" position=".8 0 0"><a-text value="Comunidad" align="center" width="1" wrapCount="10" position="0 -0.2 0"></a-text></a-image>
+  </a-entity>
+<a-entity id="botonesficha" rotation="20 86 -72" position="0.27 -1.87 -2.48" visible="false">
+  <a-text value="Ficha Vivienda: 4B" align="left" width="3" wrapCount="10" position="-0.16 0 0"></a-text><a-text value="Desde 168.000 EUR" align="left" width="2" wrapCount="30" position="-0.16 -.15 0"></a-text><a-text value="67 m2 construidos" align="left" width="2" wrapCount="30" position="-0.16 -.25 0"></a-text>
+  <a-entity id="nav02" position="0.8 -.8 0" rotation="" scale=".6 .6 .6" visible="false">
+  <a-sphere id="bolita2" class="not-clickable" position="" scale=".06 .06 .06" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="hoverBACK"
+event-set__hidePISO01="_event: click; _target: #piso3D; visible: false;"
+event-set__backhoverPISO01="_event: click; _target: #piso4B; class: clickable"
+event-set__showEDIFICIO01="_event: click; _target: #edificio1; visible: true"
+event-set__backhomePISO01="_event: click; _target: #piso4B; position: 0 0 -0.45"
+event-set__showPISO4B="_event: click; _target: #piso4B; material.opacity: 0.5"
+event-set__hideNAV02="_event: click; _target: #nav02; visible: false"
+event-set__disableReser="_event: click; _target: #botonreser; class: not-clickable"
+event-set__hideReser="_event: click; _target: #Reservar; visible: false"
+event-set__hideficha="_event: click; _target: #botonesficha; visible: false"
+event-set__disablebolita2="_event: click; _target: #bolita2; class: not-clickable"
+  ></a-sphere>
+  <a-text value="Cerrar" align="right" width="2" position="-.08 0 0"></a-text></a-entity>
+  <a-entity id="Reservar" position="0.36 -0.6 0" visible="false">
+    <a-plane id="botonreser" class="not-clickable" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" height=".2" width="1" mixin="hoverable" animation__flip0="property: rotation; to: 0 -180 0; dur: 900; startEvents: click; easing: easeInOutQuad;"><a-text value="Reservar" align="center" width="2" position=".08 0 0"></a-text><a-text value="Reservado :-)" align="center" width="2" position=".08 0 -.1" rotation="0 180 0" color="orange"></a-text></a-plane></a-entity>
+</a-entity>
+<a-box id="piso4B" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: cyan; opacity: 0.4" animation__pisozoom0="property: position; to: 1.25 -1.81 -1.67; dur: 900; startEvents: click; easing: easeInOutQuad" animation__pisofade0="property: material.opacity; to: 0; dur: 900; startEvents: click; easing: easeInOutQuad"
+event-set__showPISO01="_event: click; _target: #piso3D; visible: true;"
+event-set__quithoverPISO01="_event: click; _target: #piso4B; class: not-clickable"
+ event-set__hideEDIFICIO01="_event: click; _target: #edificio1; visible: false"
+ event-set__showNAV02="_event: click; _target: #nav02; visible: true"
+ event-set__showReser="_event: click; _target: #Reservar; visible: true"
+ event-set__enableReser="_event: click; _target: #botonreser; class: clickable"
+ event-set__showficha="_event: click; _target: #botonesficha; visible: true"
+ event-set__enablebolita2="_event: click; _target: #bolita2; class: clickable">
+<a-obj-model id="piso3D" class="not-clickable" src="#piso-obj" scale=".1 .28 .074" rotation="-90 0 0" visible="false" shadow="cast: true; receive: true;"></a-obj-model>
+<a-text value="4B" align="right" width="6" position="0.6 -0.64 -0.4" rotation="90 180 0" scale="1.2 3.8 1" color="white"></a-text>
+<a-entity>
+</a-box>
+
+</a-entity>
+<a-entity position="0 0 -1.2">
+<a-box id="piso5B" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+<a-text value="5B" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+</a-entity>
+<a-entity position="0 0 -1.5">
+<a-box id="piso6B" scale=".81 .72 .26" position="0 0 -0.45" class="not-clickable" mixin="hoverPISO" material="color: pink; opacity: 0.4"></a-box>
+<a-text value="6B" align="right" width="6" position="0.43 -0.39 -0.5" rotation="90 180 0" color="pink"></a-text>
+</a-entity>
+</a-entity>
+
+</a-entity>
+
+<a-entity id="promocion2" class="clickable" position="0.9 2 -3" rotation="35 0 0" mixin="hoverable">
+    <a-entity position="-0.25 0.86 0.512" rotation="-4 -4 -1" text-geometry="value: Promocion 2; font: #GoldmanRegular; size: 0.15; height: 0.02; bevelEnabled: true; bevelSize: 0.008; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/BlackCyan.json)">
+      <a-text value="en Municipio, Provincia, Pais." align="left" width="2.5" position="0 -.1 0"></a-text>
+    <a-text value="desde 200.000 EUR" align="right" width="1.5" position="1.5 -.2 0"></a-text></a-entity>
+    <a-obj-model class="clickable" src="#edificio2-obj" position="0 -.24 -.35" scale="0.001 0.001 0.001" id="edificio2" mixin="spin"> <!-- animation__gobig2="property: position; to: 0.97 -0.79 -1.09; dur: 900; startEvents: click; easing: easeInOutQuad"
+    event-set__quitHover02="_event: click; _target: #promocion2; mixin: notHoverable"
+    event-set__hidePROMO1="_event: click; _target: #promocion1; visible: false"
+    event-set__hidePROMO3="_event: click; _target: #promocion3; visible: false"
+    event-set__hidePROMO4="_event: click; _target: #promocion4; visible: false"
+    > -->
+    <!-- event-set__quitShrink="_event: click; _target: #promocion2; animation__aa1.enabled: false"
+    event-set__quitGrow="_event: click; _target: #promocion2; animation__aaaa1.enabled: false"
+    event-set__quitSpin="_event: click; _target: #edificio2; animation__aaa1.enabled: false"
+   event-set__quitSh="_event: click; _target: #exte; text-geometry.value: f++ker;" -->
+</a-obj-model>
+</a-entity>
+<a-entity id="promocion3" position="-0.85 0.7 -2.4" rotation="35 0 0" mixin="hoverable">
+  <a-entity position="-0.5 0.86 0.512" rotation="-30 1.2 0" scale="0.8 0.8 0.8" text-geometry="value: Promocion 3; font: #GoldmanRegular; size: 0.15; height: 0.02; bevelEnabled: true; bevelSize: 0.008; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/BlackCyan.json)">
+    <a-text value="en Municipio, Provincia, Pais." align="left" width="2.5" position="0 -.1 0"></a-text>
+  <a-text value="desde 440.000 EUR" align="right" width="1.5" position="1.5 -.2 0"></a-text></a-entity>
+  <a-obj-model class="clickable" src="#edificio1-obj" scale="0.001 0.001 0.001" id="edificio3" mixin="spin"><!-- animation__gobig3="property: position; to: 0.97 -0.79 -1.09; dur: 900; startEvents: click; easing: easeInOutQuad"
+ event-set__quitHover03="_event: click; _target: #promocion3; mixin: notHoverable"
+ event-set__hidePROMO1="_event: click; _target: #promocion1; visible: false"
+ event-set__hidePROMO2="_event: click; _target: #promocion2; visible: false"
+ event-set__hidePROMO4="_event: click; _target: #promocion4; visible: false"> -->
+</a-obj-model>
+</a-entity>
+<a-entity id="promocion4" class="clickable" position="1 0.72 -2.3" rotation="35 0 0" mixin="hoverable">
+  <a-entity id="exte" position="-0.75 0.86 0.512" rotation="-30 -1.2 0" scale="0.8 0.8 0.8" text-geometry="value: Promocion 4; font: #GoldmanRegular; size: 0.15; height: 0.02; bevelEnabled: true; bevelSize: 0.008; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/BlackCyan.json)">
+    <a-text value="en Municipio, Provincia, Pais." align="left" width="2.5" position="0 -.1 0"></a-text>
+  <a-text value="desde 300.000 EUR" align="right" width="1.5" position="1.5 -.2 0"></a-text></a-entity>
+  <a-obj-model class="clickable" src="#edificio1-obj" scale="0.001 0.001 0.001" id="edificio4" mixin="spin"> <!-- animation__gobig4="property: position; to: 0.97 -0.79 -1.09; dur: 900; startEvents: click; easing: easeInOutQuad"
+  event-set__quitHover04="_event: click; _target: #promocion4; mixin: notHoverable"
+  event-set__hidePROMO1="_event: click; _target: #promocion1; visible: false"
+  event-set__hidePROMO2="_event: click; _target: #promocion2; visible: false"
+  event-set__hidePROMO3="_event: click; _target: #promocion3; visible: false"
+  > -->
+</a-obj-model>
+</a-entity>
+</a-entity>
+  <!-- <a-obj-model position="1 -1 0" scale="0.0001 0.0001 0.0001" src="#edificio2-obj" mtl="#edificio2-mtl" id="edificio2" animation__position="property: object3D.rotation.y; to: 360; dur: 20000; easing: linear; loop: true" animation__mouseenter="property: scale; to: 0.00012 0.00012 0.00012; dur: 600; easing: easeOutElastic; startEvents: mouseenter"
+  animation__mouseleave="property: scale; to: 0.0001 0.0001 0.0001; dur: 300; startEvents: mouseleave"></a-obj-model> -->
+</a-entity>
+<!--<a-text value="¡Bienvenido! Desde aqui puedes descubrir nuevas promociones de viviendas en venta y acceder a todos tus servicios :-)" align="center" width="1" position="0 2.7 -1.5"></a-text> -->
+
+<!--  <a-entity id="homeUI" class="clickable" visible=""  position="0 -4 0" rotation="-90 0 0" mixin="hoverable">
+    <a-image id="home" class="clickable" src="#homeIMG" material="" scale=".5 .5 .5" opacity="1" geometry="width: 2.97; height: 2.1" preload="true" mixin="confirm volver"></a-image>
+    <a-circle id="circle" radius="1" color="#fff" position="0 0 -1"
+></a-circle>
+</a-entity> -->
+  <a-entity id="MisDisenos" position="0 0.7 0" rotation="0 -40 0" mixin="">
+<a-curvedimage id="disBG" src="#disenosBG" height="2" radius="4.5" theta-length="80" position="0 1.75 0" rotation="0 -112 0" scale="1 1 1"></a-curvedimage>
+<a-curvedimage id="favs" src="#favsBG" height="2" radius="4.5" theta-length="80" position="-0.37 0.06 0.094" rotation="11 -112 -8.7" scale=".8 .8 .8">
+  <a-entity id="fav00" position="1.748 -1.56 0.72" rotation="1.54 167.5 .9">
+    <a-image src="#itemBG" width="1.31" height="1.24" position="-2.33 1.7 -0.6" rotation="0 78 0" material="alphaTest:  0.5; color:  #eeff00;"></a-image>
+    <a-text value="5º A, Las Dalias, Alcobendas" align="center" width="2" position="-2.08 0.978 -.52" rotation="0 78 0" material="alphaTest:  2;"></a-text>
+  <a-obj-model src="#piso-obj" position="-1.85 1.75 -0.4" rotation="-29 -109 -4.6" scale=".04 .04 .04"></a-obj-model>
+  </a-entity>
+  <a-entity id="fav01" position="1.33 -1.68 1.32" rotation="0 142 -2">
+    <a-image src="#itemBG" width="1.31" height="1.24" position="-2.33 1.7 -0.6" rotation="0 78 0" material="alphaTest:  0.5; color:  #eeff00;"></a-image>
+    <a-text value="6ºA, Los Olmos, S.S. de los Reyes" align="center" width="2" position="-2.08 0.978 -.52" rotation="0 78 0" material="alphaTest:  2;"></a-text>
+  <a-obj-model src="#piso-obj" position="-1.57 1.86 -0.48" rotation="13.81 3.7 -33.4" scale=".04 .04 .04"></a-obj-model>
+  </a-entity>
+  <a-entity id="fav02" position="0.54 -1.91 1.99" rotation="0 118 -7">
+    <a-image src="#itemBG" width="1.31" height="1.24" position="-2.33 1.7 -0.6" rotation="0 78 0" material="alphaTest:  0.5; color:  #eeff00;"></a-image>
+    <a-text value="3ºB, Los Chopos, Alcobendas" align="center" width="2" position="-2.08 0.978 -.52" rotation="0 78 0" material="alphaTest:  2;"></a-text>
+  <a-obj-model src="#piso-obj" position="-1.97 1.93 -0.55" rotation="39 100 13" scale=".04 .04 .04"></a-obj-model>
+  </a-entity>
+</a-curvedimage>
+    <a-entity id="titleDisenos" position="-3.65 2.92 2.264" rotation="11 102 0" scale="" text-geometry="value: Mi Casa Virtual; font: #GoldmanRegular; size: 0.22; height: 0.03; bevelEnabled: true; bevelSize: 0.008; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)">
+    </a-entity>
+    <a-entity id="Diseno00" mixin="hoverable" position="-0.87 0 1.16" rotation="0 54 0">
+      <a-image id="disenoBG00" src="#itemBG" width="1.31" height="1.24" position="-2.33 1.7 -0.6" rotation="0 78 0"></a-image>
+      <a-image id="badge00" src="#pendiente" width=".6" height=".2" position="-2.17 1.165 -0.173" rotation="0 78 0" scale="1.2 1.2 1.2"><a-image id="badgeextras0" src="#extras0" width=".6" height=".3" position="-0.07 0.785 -0.13" rotation="0 0 0" scale="1 1 1"></a-image></a-image>
+      <a-text id="nombredis" value="Mi diseno 1" align="center" width="2" position="-2.04 0.96 -.049" rotation="0 78 0"></a-text>
+<a-obj-model id="modelovisita" class="clickable" src="#piso-obj" position="-2.15 1.63 -0.5" rotation="-84 -114 3.5" scale=".04 .04 .04" shadow="cast: false; receive: false;" animation__gobigmodel="property: position; to: -3.61 -0.17 0.025; dur: 900; startEvents: click; easing: easeInOutQuad" animation__makebigmodel="property: scale; to: .6 .6 .6; dur: 900; startEvents: click; easing: easeInOutQuad" animation__lineupmodel="property: rotation; to: 0 -55 0; dur: 900; startEvents: click; easing: easeInOutQuad"
+event-set__shadowCAST="_event: click; _target: #modelovisita; shadow.cast: true"
+event-set__shadowRECEIVE="_event: click; _target: #modelovisita; shadow.receive: true"
+event-set__hidePROMOS="_event: click; _target: #promos; visible: false"
+event-set__showWatchUI="_event: click; _target: #watchUI; visible: true"
+event-set__disableModelo="_event: click; _target: #modelovisita; class: not-clickable;"
+event-set__enableBotonenviar="_event: click; _target: #botonenviar; class: clickable"
+event-set__enableBolitaback="_event: click; _target: #bolitaback; class: clickable"
+event-set__enableCategory00="_event: click; _target: #category00; class: clickable"
+event-set__enableCategory01="_event: click; _target: #category01; class: clickable"
+event-set__hideDiseñoBG00="_event: click; _target: #disenoBG00; visible: false"
+event-set__hidebadge00="_event: click; _target: #badge00; visible: false"
+event-set__hideName00="_event: click; _target: #nombredis; visible: false"
+event-set__hideTitleDisenos="_event: click; _target: #titleDisenos; visible: false"
+event-set__quitClickv001="_event: click; _target: #promocion1; class: not-clickable"
+event-set__quitClickv01="_event: click; _target: #edificio1; class: not-clickable"
+event-set__quitClickv02="_event: click; _target: #promocion2; class: not-clickable"
+event-set__quitClickv002="_event: click; _target: #edificio2; class: not-clickable"
+event-set__quitClickv03="_event: click; _target: #promocion3; class: not-clickable"
+event-set__quitClickv003="_event: click; _target: #edificio3; class: not-clickable"
+event-set__quitClickv04="_event: click; _target: #promocion4; class: not-clickable"
+event-set__quitClickv004="_event: click; _target: #edificio4; class: not-clickable"
+event-set__quitHoverPROMO="_event: click; _target: #activator; class: not-clickable"
+event-set__hideDISENO1="_event: click; _target: #Diseno01; visible: false"
+event-set__disableDISENO1="_event: click; _target: #modelovisita2; class: not-clickable"
+event-set__hideComoVa="_event: click; _target: #ComoVa; visible: false"
+event-set__disablebotoncv1="_event: click; _target: #MisDocumentos; class: not-clickable"
+event-set__disablebotoncv2="_event: click; _target: #MisMensajes; class: not-clickable"
+event-set__disableComoVa="_event: click; _target: #edificio11; class: not-clickable"
+event-set__hideDisenoBG="_event: click; _target: #disBG; visible: false"
+event-set__changeBG="_event: click; _target: #sky; src: #BG2"
+event-set__cambialuz="_event: click; _target: #light1; rotation: 0 60 0;"
+event-set__hideFavs="_event: click; _target: #favs; visible: false"
+event-set__hideAdd="_event: click; _target: #Diseno02; visible: false"
+
+></a-obj-model>
+</a-entity>
+<a-entity id="Diseno01" mixin="hoverable" position="-1.16 0 0.687" rotation="0 28 0">
+  <a-image id="add" src="#itemBG" width="1.31" height="1.24" position="-2.33 1.7 -0.6" rotation="0 78 0"></a-image>
+    <a-image src="#completado" width=".6" height=".2" position="-2.17 1.165 -0.173" rotation="0 78 0" scale="1.2 1.2 1.2"><a-image id="badgeextras1" src="#extras1" width=".6" height=".3" position="-0.07 0.785 -0.13" rotation="0 0 0" scale="1 1 1"></a-image></a-image>
+  <a-text value="Mi diseno 2" align="center" width="2" position="-2.08 0.978 -.52" rotation="0 78 0"></a-text>
+  <!-- <a-text value="Mi diseño 1" align="center" width="2" position="-2.33 2.158 -0.212" rotation="0 78 0"></a-text> -->
+<a-obj-model id="modelovisita2" class="clickable" src="#piso-obj" position="-2.15 1.63 -0.5" rotation="-84 -114 3.5" scale=".04 .04 .04"></a-obj-model>
+</a-entity>
+<a-entity id="Diseno02" mixin="hoverable" position="-1.41 0 -0.22" rotation="0 8.7 0">
+  <a-image src="#itemBG" width="1.31" height=".6" position="-2.33 1.7 -0.6" rotation="0 78 0"></a-image>
+
+  <a-text value="Anadir nuevo" align="center" width="2" position="-2.08 0.978 -.52" rotation="0 78 0"></a-text>
+  <a-box position="-2.17 1.65 -0.52" rotation="0 77.35 0" scale=".4 .1 .1"><a-box scale=".25 4 1" rotate="90 0 0"></a-box></a-box>
+
+</a-entity>
+</a-entity>
+<a-entity id="ComoVa" rotation="0 40 0" mixin="" position=".92 0 -.92">
+  <a-entity id="porcentaje" position="2.18 1.54 -0.078" rotation="0 -90 0" scale="" text-geometry="value: 12%; font: #GoldmanRegular; size: 0.3; height: 0.28; bevelEnabled: true; bevelSize: 0.008; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/BlackCyan.json)">
+  <a-text value="¡Estructura completada!" align="center" width="1.8" position="0.44 0.36 .45"></a-text></a-entity>
+  <a-entity id="titleComoVa" position="2.33 2.75 -0.92" rotation="20 -90 0" scale="" text-geometry="value: ¿Como va mi casa?; font: #GoldmanRegular; size: 0.12; height: 0.01; bevelEnabled: true; bevelSize: 0.008; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)">
+    <a-entity id="ristra" position="2 0 1.3" rotation="3.73 -46 16" scale=".7 .7 .7" visible="false">
+      <a-plane class="clickable" id="MisDatos" width="1" height=".3" position="0 -0 0.5" rotation="20 0 0" mixin="hoverable discretebutton" material="color: blue; opacity: 0.2"><a-text value="Mis Datos" align="center" width="1" position="0 0 0.02"></a-text></a-plane>
+      <a-plane class="clickable" id="MisDocumentos" width="1" height=".3" position="0 -.3 0.2" rotation="10 0 0" mixin="hoverable discretebutton" material="color: blue; opacity: 0.2"><a-text value="Mis Documentos" align="center" width="1" position="0 0 0.02"></a-text></a-plane>
+      <a-plane class="clickable" id="MisMensajes" width="1" height=".3" position="0 -.65 0" rotation="0 0 0" mixin="hoverable discretebutton" material="color: blue; opacity: 0.2"><a-text value="Mis Mensajes" align="center" width="1" position="0 0 0.02"></a-text></a-plane>
+      <a-plane class="clickable" id="MiResumenMejoras" width="1" height=".3" position="0 -1 0" rotation="0 0 0" mixin="hoverable discretebutton" material="color: blue; opacity: 0.2"><a-text value="Mi Resumen de Mejoras" align="center" width="1" position="0 0 0.02"></a-text></a-plane>
+      <a-plane class="clickable" id="MisPagos" width="1" height=".3" position="0 -1.3 0.2" rotation="-10 0 0" mixin="hoverable discretebutton" material="color: blue; opacity: 0.2"><a-text value="Mis Pagos" align="center" width="1" position="0 0 0.02"></a-text></a-plane>
+      <a-plane class="clickable" id="MiMemo" width="1" height=".3" position="0 -1.6 0.5" rotation="-20 0 0" mixin="hoverable discretebutton" material="color: blue; opacity: 0.2"><a-text value="Mi Memoria de Calidades" align="center" width="1" position="0 0 0.02"></a-text></a-plane>
+    </a-entity>
+  </a-entity>
+  <a-obj-model class="clickable" src="#edificio1-obj" scale="0.001 0.001 0.001" id="edificio11" position="2.252 1.427 -0.572" rotation="13 -30 17" material="color: pink; opacity: .3"
+event-set__applytransform="_event: click; _target: #ComoVa; mixin: traveling"
+event-set__shootPROMO="_event: click; _target: #promos; position: 0 20 0"
+event-set__shootDISENOS="_event: click; _target: #MisDisenos; position: 0 20 0"
+event-set__showNAV="_event: click; _target: #navComoVa; visible: true"
+event-set__enableNAV="_event: click; _target: #bolitaComoVa; class: clickable"
+event-set__showRISTRA1="_event: click; _target: #ristra; visible: true">
+<a-obj-model src="#estructura1-obj" scale="" id="estructura1" material=""></a-obj-model></a-obj-model>
+<a-entity id="navComoVa" position="2.86 1.2 .7" rotation="0 -90 0" visible="false">
+<a-sphere id="bolitaComoVa" class="not-clickable" position="" scale=".06 .06 .06" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="hoverBACK"
+event-set__applytransformback="_event: click; _target: #ComoVa; mixin: travelingBACK"
+event-set__groundPROMO="_event: click; _target: #promos; position: -0.25 1.5 -3"
+event-set__groundDISENOS="_event: click; _target: #MisDisenos; position: 0 0.7 0"
+event-set__hideNAV="_event: click; _target: #navComoVa; visible: false"
+event-set__disableNAV="_event: click; _target: #bolitaComoVa; class: not-clickable"
+event-set__hideRISTRA1="_event: click; _target: #ristra; visible: false"
+></a-sphere>
+<a-text value="Volver" align="left" width="1" position=".08 0 0"></a-text></a-entity>
+</a-entity>
+  <a-light type="ambient" color="#fff" intensity="0.4"></a-light>
+  <a-entity id="camera" camera="userHeight: 1.8" look-controls wasd-controls tracked-controls="controller: 0; idPrefix: OpenVR" position="0 1.8 0" data-aframe-inspector-original-camera="" cursor="fuse: false; rayOrigin: mouse; mouseCursorStylesEnabled: true" raycaster="objects: .clickable">
+    <a-entity id="nav1" position="-.3 -.7 -1" visible="false">
+    <a-sphere class="clickable" position="" scale=".06 .06 .06" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="volver hoverBACK"></a-sphere>
+    <a-text value="Volver" align="left" width="1" position=".08 0 0"></a-text></a-entity></a-entity>
+  <a-entity id="lefthand" laser-controls="hand: left" weapon="" shoot="" position="" rotation="" scale="" visible="" vive-controls="" oculus-touch-controls="" windows-motion-controls="" raycaster="objects: .clickable">
+<a-entity id="watchUI" visible="false" scale=".7 .7 .7" rotation="-90">
+  <a-plane id="olorbase" width=".63" height=".77" position=".371 .25 0" material="color: black;"></a-plane>
+  <a-image src="#controles" position=".5 .53 0.001" width=".4" height=".133" scale=".8 .8 .8"></a-image>
+  <a-image src="#carrusel" position=".25 .3 0.001" width=".4" height=".133" scale=".8 .8 .8"></a-image>
+  <a-entity  position=".18 .16 0.01" scale=".7 .7 .7">
+  <a-image id="category00" class="clickable" src="#category" width=".2" height=".2" animation__hoverUp="property: position; to: 0 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: 0 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+event-set__showUIBG1="_event: click; _target: #UIBG1; visible: true"
+event-set__enableOption00="_event: click; _target: #option00; class: clickable"
+event-set__enableOption01="_event: click; _target: #option01; class: clickable"
+event-set__enableUIBG10="_event: click; _target: #UIBG1; class: clickable"
+event-set__showNav03="_event: click; _target: #nav03; visible: true"
+event-set__enableBolita3="_event: click; _target: #bolita3; class: clickable"
+event-set__hideBotonesUI="_event: click; _target: #botonesUI; visible: false"
+event-set__disableBotonenviar2="_event: click; _target: #botonenviar; class: not-clickable"
+event-set__disableBolitaback2="_event: click; _target: #bolitaback; class: not-clickable"
+  ><a-text value="Paredes" align="center" color="white" width=".5" position="0 -0.1 0"></a-text>
+  <a-plane class="not-clickable" id="UIBG1" width="0.6" height="0.6" position="0.2 0 0.01" visible="false">
+
+    <a-image id="option00" position="-0.17 0 0.01" class="not-clickable" src="#option" width=".2" height=".2" animation__hoverUp="property: position; to: -0.17 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: -0.17 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+    ><a-text value="Opcion #1" align="center" color="black" width=".5" position="0 -0.1 0"></a-text></a-image>
+    <a-image id="option01" position="0.135 0 0.01" class="not-clickable" src="#option" width=".2" height=".2" animation__hoverUp="property: position; to: 0.135 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: 0.135 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+    ><a-text value="Opcion #2" align="center" color="black" width=".5" position="0 -0.1 0"></a-text></a-image></a-plane></a-image>
+    <a-entity id="nav03" visible="false" position="0.2 0 0">
+    <a-sphere id="bolita3" class="clickable" position="-.2 .2 0.075" scale=".03 .03 .03" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="hoverBACK"
+     event-set__disableUIBG1f="_event: click; _target: #UIBG1; class: not-clickable"
+     event-set__disableOption00f="_event: click; _target: #option00; class: not-clickable"
+     event-set__disableOption01f="_event: click; _target: #option01; class: not-clickable"
+     event-set__hideUIBG1f="_event: click; _target: #UIBG1; visible: false"
+     event-set__hideNav033="_event: click; _target: #nav03; visible: false"
+     event-set__disableBolita3="_event: click; _target: #bolita3; class: not-clickable"
+     event-set__showBotonesUI="_event: click; _target: #botonesUI; visible: true"
+     event-set__enableBotonenviar2="_event: click; _target: #botonenviar; class: clickable"
+     event-set__enableBolitaback2="_event: click; _target: #bolitaback; class: clickable"></a-sphere>
+     <a-text value="Cerrar" align="left" color="grey" width=".5" position="-.12 0.2 0.075"></a-text>
+   </a-entity>
+</a-entity>
+<a-entity  position="0.38 .16 0.01" scale=".7 .7 .7">
+<a-image id="category01" class="clickable" src="#category" width=".2" height=".2" animation__hoverUp="property: position; to: 0 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: 0 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+event-set__showUIBG2="_event: click; _target: #UIBG2; visible: true"
+event-set__enableOption10="_event: click; _target: #option10; class: clickable"
+event-set__enableOption11="_event: click; _target: #option11; class: clickable"
+event-set__enableUIBG20="_event: click; _target: #UIBG2; class: clickable"
+event-set__showNav04="_event: click; _target: #nav04; visible: true"
+event-set__enableBolita4="_event: click; _target: #bolita4; class: clickable"
+event-set__hideBotonesUI="_event: click; _target: #botonesUI; visible: false"
+event-set__disableBotonenviar2="_event: click; _target: #botonenviar; class: not-clickable"
+event-set__disableBolitaback2="_event: click; _target: #bolitaback; class: not-clickable"
+><a-text value="Armarios" align="center" color="white" width=".5" position="0 -0.1 0"></a-text>
+<a-plane class="not-clickable" id="UIBG2" width="0.6" height="0.6" position="0.2 0 0.01" visible="false">
+
+  <a-image id="option10" position="-0.17 0 0.01" class="not-clickable" src="#option" width=".2" height=".2" animation__hoverUp="property: position; to: -0.17 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: -0.17 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+  ><a-text value="Opcion #1" align="center" color="black" width=".5" position="0 -0.1 0"></a-text></a-image>
+  <a-image id="option11" position="0.135 0 0.01" class="not-clickable" src="#option" width=".2" height=".2" animation__hoverUp="property: position; to: 0.135 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: 0.135 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+  ><a-text value="Opcion #2" align="center" color="black" width=".5" position="0 -0.1 0"></a-text></a-image></a-plane></a-image>
+  <a-entity id="nav04" visible="false" position="0.2 0 0">
+  <a-sphere id="bolita4" class="clickable" position="-.2 .2 0.075" scale=".03 .03 .03" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="hoverBACK"
+   event-set__disableUIBG2f="_event: click; _target: #UIBG2; class: not-clickable"
+   event-set__disableOption10f="_event: click; _target: #option10; class: not-clickable"
+   event-set__disableOption11f="_event: click; _target: #option11; class: not-clickable"
+   event-set__hideUIBG2f="_event: click; _target: #UIBG2; visible: false"
+   event-set__hideNav044="_event: click; _target: #nav04; visible: false"
+   event-set__disableBolita4="_event: click; _target: #bolita4; class: not-clickable"
+   event-set__disableBotonenviar="_event: click; _target: #botonenviar; class: not-clickable"
+   event-set__showBotonesUI="_event: click; _target: #botonesUI; visible: true"
+   event-set__enableBotonenviar2="_event: click; _target: #botonenviar; class: clickable"
+   event-set__enableBolitaback2="_event: click; _target: #bolitaback; class: clickable"></a-sphere>
+   <a-text value="Cerrar" align="left" color="grey" width=".5" position="-.12 0.2 0.075"></a-text>
+ </a-entity></a-entity>
+ <a-entity  position="0.575 .16 0.01" scale=".7 .7 .7">
+ <a-image id="category02" class="clickable" src="#category" width=".2" height=".2" animation__hoverUp="property: position; to: 0 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: 0 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+ event-set__showUIBG3="_event: click; _target: #UIBG3; visible: true"
+ event-set__enableOption20="_event: click; _target: #option20; class: clickable"
+ event-set__enableOption21="_event: click; _target: #option21; class: clickable"
+ event-set__enableUIBG30="_event: click; _target: #UIBG3; class: clickable"
+ event-set__showNav04="_event: click; _target: #nav05; visible: true"
+ event-set__enableBolita4="_event: click; _target: #bolita5; class: clickable"
+ event-set__hideBotonesUI="_event: click; _target: #botonesUI; visible: false"
+ event-set__disableBotonenviar2="_event: click; _target: #botonenviar; class: not-clickable"
+ event-set__disableBolitaback2="_event: click; _target: #bolitaback; class: not-clickable"
+ ><a-text value="Suelos" align="center" color="white" width=".5" position="0 -0.1 0"></a-text>
+ <a-plane class="not-clickable" id="UIBG3" width="0.6" height="0.6" position="0.2 0 0.01" visible="false">
+
+   <a-image id="option20" position="-0.17 0 0.01" class="not-clickable" src="#option" width=".2" height=".2" animation__hoverUp="property: position; to: -0.17 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: -0.17 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+   ><a-text value="Opcion #1" align="center" color="black" width=".5" position="0 -0.1 0"></a-text></a-image>
+   <a-image id="option21" position="0.135 0 0.01" class="not-clickable" src="#option" width=".2" height=".2" animation__hoverUp="property: position; to: 0.135 0 0.03; dur: 150; startEvents: mouseenter; easing: easeInOutQuad;" animation__hoverDown="property: position; to: 0.135 0 0.01; dur: 150; startEvents: mouseleave; easing: easeInOutQuad;"
+   ><a-text value="Opcion #2" align="center" color="black" width=".5" position="0 -0.1 0"></a-text></a-image></a-plane></a-image>
+   <a-entity id="nav05" visible="false" position="0.2 0 0">
+   <a-sphere id="bolita5" class="clickable" position="-.2 .2 0.075" scale=".03 .03 .03" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="hoverBACK"
+    event-set__disableUIBG2f="_event: click; _target: #UIBG3; class: not-clickable"
+    event-set__disableOption20f="_event: click; _target: #option20; class: not-clickable"
+    event-set__disableOption21f="_event: click; _target: #option21; class: not-clickable"
+    event-set__hideUIBG3f="_event: click; _target: #UIBG3; visible: false"
+    event-set__hideNav05="_event: click; _target: #nav05; visible: false"
+    event-set__disableBolita5="_event: click; _target: #bolita5; class: not-clickable"
+    event-set__disableBotonenviar="_event: click; _target: #botonenviar; class: not-clickable"
+    event-set__showBotonesUI="_event: click; _target: #botonesUI; visible: true"
+    event-set__enableBotonenviar2="_event: click; _target: #botonenviar; class: clickable"
+    event-set__enableBolitaback2="_event: click; _target: #bolitaback; class: clickable"></a-sphere>
+    <a-text value="Cerrar" align="left" color="grey" width=".5" position="-.12 0.2 0.075"></a-text>
+  </a-entity>
+</a-entity>
+<a-entity id="botonesUI" position="-0.03 -0.6 0">
+  <a-plane id="botonenviar" class="clickable" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" height=".12" width=".5" mixin="hoverableBOTON" scale=".4 .4 .4" position="0.58 0.9 0.044" animation__flip0="property: rotation; to: 0 -180 0; dur: 900; startEvents: click; easing: easeInOutQuad;"><a-text value="Enviar Seleccion" align="center" width="1" position=""></a-text><a-text value="Enviado :-)" align="center" width="1" position="" rotation="0 180 0" color="orange"></a-text></a-plane>
+  <a-entity id="navBACK" position=".335 0.914 0">
+  <a-sphere id="bolitaback" class="clickable" position="-.2 .2 0.075" scale=".03 .03 .03" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/Normamap_Color_I.json)" mixin="hoverBACK"
+   event-set__disableCategory00="_event: click; _target: #category00; class: not-clickable"
+   event-set__disableCategory01="_event: click; _target: #category01; class: not-clickable"
+   event-set__hideWatchUI="_event: click; _target: #watchUI; visible: false"
+   event-set__disableBotonenviar="_event: click; _target: #botonenviar; class: not-clickable"
+   event-set__disableBolitaback="_event: click; _target: #bolitaback; class: not-clickable"
+   event-set__showPROMOS="_event: click; _target: #promos; visible: true"
+   event-set__enableModelo="_event: click; _target: #modelovisita; class: clickable;"
+   event-set__moveModelo="_event: click; _target: #modelovisita; position: -2.15 1.63 -.5;"
+   event-set__sizeModelo="_event: click; _target: #modelovisita; scale: .04 .04 .04;"
+   event-set__colocaModelo="_event: click; _target: #modelovisita; rotation: -84 -114 3.5;"
+   event-set__showDiseñoBG00="_event: click; _target: #disenoBG00; visible: true"
+   event-set__showbadge00="_event: click; _target: #badge00; visible: true"
+   event-set__sshowName00="_event: click; _target: #nombredis; visible: true"
+   event-set__showTitleDisenos="_event: click; _target: #titleDisenos; visible: true"
+   event-set__allowClickv001="_event: click; _target: #promocion1; class: clickable"
+   event-set__allowClickv01="_event: click; _target: #edificio1; class: clickable"
+   event-set__allowClickv02="_event: click; _target: #promocion2; class: clickable"
+   event-set__allowClickv002="_event: click; _target: #edificio2; class: clickable"
+   event-set__allowClickv03="_event: click; _target: #promocion3; class: clickable"
+   event-set__allowClickv003="_event: click; _target: #edificio3; class: clickable"
+   event-set__allowClickv04="_event: click; _target: #promocion4; class: clickable"
+   event-set__allowClickv004="_event: click; _target: #edificio4; class: clickable"
+   event-set__allowHoverPROMO="_event: click; _target: #activator; class: clickable"
+   event-set__showDISENO1="_event: click; _target: #Diseno01; visible: true"
+   event-set__enableDISENO1="_event: click; _target: #modelovisita2; class: clickable"
+   event-set__showComoVa="_event: click; _target: #ComoVa; visible: true"
+   event-set__enablebotoncv1="_event: click; _target: #MisDocumentos; class: clickable"
+   event-set__enablebotoncv2="_event: click; _target: #MisMensajes; class: clickable"
+   event-set__enableComoVa="_event: click; _target: #edificio11; class: clickable"
+   event-set__showDisenoBG="_event: click; _target: #disBG; visible: true"
+   event-set__changeBGback="_event: click; _target: #sky; src: #BG"
+   event-set__giraluz="_event: click; _target: #light1; rotation: 0 0 0;"
+   event-set__shadowCASToff="_event: click; _target: #modelovisita; shadow.cast: false"
+   event-set__shadowRECEIVEoff="_event: click; _target: #modelovisita; shadow.receive: false"
+   event-set__showFavs="_event: click; _target: #favs; visible: true"
+   event-set__showAdd="_event: click; _target: #Diseno02; visible: true"
+   ></a-sphere>
+   <a-text value="Volver al Inicio" align="left" color="grey" width=".5" position="-.155 0.2 0.075"></a-text>
+ </a-entity></a-entity>
+  <a-entity id="MiCasaVirtual" position="0.113 0.398 0.010" rotation="0 0 0" scale="0.8 0.8 0.8" text-geometry="value: Mi Casa Virtual; font: #GoldmanRegular; size: 0.06; height: 0.006; bevelEnabled: true; bevelSize: 0.004; bevelThickness: 0.01;" shader-frog="src:url(https://pablohumanes.de/VR/lofi/shaders/BlackCyan.json)"></a-entity>
+</a-entity>
+  </a-entity>
+<a-entity id="righthand" laser-controls="hand: right" weapon="" shoot="" position="" rotation="" scale="" visible="" vive-controls="" oculus-touch-controls="" windows-motion-controls="" raycaster="objects: .clickable"></a-entity>
+  <div class="a-loader-title" style="display: none;">maiPISO</div><div class="a-loader-title" style="display: none;">maiPISO</div><div class="a-loader-title" style="display: none;">Promotora en Realidad Virtual</div><div class="a-loader-title" style="display: none;">Promotora en Realidad Virtual</div></a-scene>
+</body>
+</html>

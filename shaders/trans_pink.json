@@ -1,0 +1,37 @@
+{
+  "id": 2317,
+  "name": "New Composed Shader",
+  "fragment": "#extension GL_OES_standard_derivatives : enable\n\nprecision highp float;\nuniform vec3 color;\nuniform float start;\nuniform float end;\nuniform float alpha;\nvarying vec3 fPosition;\nvarying vec3 fNormal;\nvec4 Transparent_Glow1526111091650_203_main() \n                                                                        {\n                                                                            vec4 Transparent_Glow1526111091650_203_gl_FragColor = vec4(0.0);\n                                                                            if (!gl_FrontFacing) \n                                                                            {\n                                                                                discard;\n                                                                            }\n                                                                             vec3 normal = normalize(fNormal);\n                                                                            vec3 eye = normalize(-fPosition.xyz);\n                                                                            vec3 light = normalize(-fPosition.xyz + vec3(1.0, 1.0, 0.0));\n                                                                            float NdotE = dot(normal, eye);\n                                                                            float NdotL = dot(normal, light);\n                                                                            float rim = smoothstep(start, end, 1.0 - NdotE);\n                                                                            float spec = pow(NdotL, 8.0);\n                                                                            float value = clamp(rim * alpha, 0.0, 0.8) + 0.2;\n                                                                            value += smoothstep(spec, 0.0, 0.5);\n                                                                            Transparent_Glow1526111091650_203_gl_FragColor = vec4(color * value, value);\n                                                                            return Transparent_Glow1526111091650_203_gl_FragColor *= 1.0;\n                                                                        }\nvoid main() \n                                                                        {\n                                                                            gl_FragColor = Transparent_Glow1526111091650_203_main();                                                                        }\n",
+  "vertex": "precision highp float;\nuniform mat3 normalMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nattribute vec3 position;\nattribute vec3 normal;\nvarying vec3 fNormal;\nvarying vec3 fPosition;\nvec4 Transparent_Glow1526111091650_203_main() \n                                                                        {\n                                                                            vec4 Transparent_Glow1526111091650_203_gl_Position = vec4(0.0);\n                                                                            fNormal = normalize(normalMatrix * normal);\n                                                                            vec4 pos = modelViewMatrix * vec4(position, 1.0);\n                                                                            fPosition = pos.xyz;\n                                                                            Transparent_Glow1526111091650_203_gl_Position = projectionMatrix * pos;\n                                                                            return Transparent_Glow1526111091650_203_gl_Position *= 1.0;\n                                                                        }\nvoid main() \n                                                                        {\n                                                                            gl_Position = Transparent_Glow1526111091650_203_main();                                                                        }\n",
+  "uniforms": {
+    "color": {
+      "value": {
+        "r": 1,
+        "g": "0.2",
+        "b": "0.2"
+      },
+      "type": "c",
+      "glslType": "vec3"
+    },
+    "start": {
+      "value": "0.19614534",
+      "type": "f",
+      "glslType": "float"
+    },
+    "end": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    },
+    "alpha": {
+      "value": "1",
+      "type": "f",
+      "glslType": "float"
+    }
+  },
+  "url": "http://shaderfrog.com/app/view/2317",
+  "user": {
+    "username": "jetta.wan",
+    "url": "http://shaderfrog.com/app/profile/andrewray"
+  }
+}
