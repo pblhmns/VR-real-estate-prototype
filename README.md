@@ -3,4 +3,4 @@ WebVR prototype using a-frame for my <a href="http://hdl.handle.net/10609/127666
 
 <img src="https://pablohumanes.de/wordpress/wp-content/uploads/2021/02/humanes_pablo_TFM_thumb_2021.gif"></img>
 
-Demo: https://pablohumanes.de/VR/hifi
+🕹 Demo: https://pablohumanes.de/VR/hifi
